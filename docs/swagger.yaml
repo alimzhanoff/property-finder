@@ -1,0 +1,177 @@
+basePath: /api/v1
+definitions:
+  models.Address:
+    properties:
+      address_id:
+        type: integer
+      address_postal_code:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      street:
+        $ref: '#/definitions/models.Street'
+    type: object
+  models.City:
+    properties:
+      city_id:
+        type: integer
+      city_name:
+        type: string
+      region:
+        $ref: '#/definitions/models.Region'
+    type: object
+  models.Country:
+    properties:
+      country_id:
+        type: integer
+      country_name:
+        type: string
+    type: object
+  models.MetroStation:
+    properties:
+      metro_station_id:
+        type: integer
+      metro_station_name:
+        type: string
+    type: object
+  models.Property:
+    properties:
+      metro_station:
+        $ref: '#/definitions/models.MetroStation'
+      property_address:
+        $ref: '#/definitions/models.Address'
+      property_address_text:
+        type: string
+      property_area:
+        type: number
+      property_construction_year:
+        type: integer
+      property_description:
+        type: string
+      property_distance_to_metro:
+        type: number
+      property_has_pool:
+        type: boolean
+      property_id:
+        type: integer
+      property_price:
+        type: number
+      property_rooms:
+        type: integer
+      property_type:
+        $ref: '#/definitions/models.PropertyType'
+    type: object
+  models.PropertyType:
+    properties:
+      property_type_id:
+        type: integer
+      property_type_name:
+        type: string
+    type: object
+  models.Region:
+    properties:
+      region_country:
+        $ref: '#/definitions/models.Country'
+      region_id:
+        type: integer
+      region_name:
+        type: string
+    type: object
+  models.Street:
+    properties:
+      city:
+        $ref: '#/definitions/models.City'
+      street_id:
+        type: integer
+      street_name:
+        type: string
+    type: object
+  response.ErrResponse:
+    properties:
+      code:
+        description: application-specific error code
+        type: integer
+      error:
+        description: application-level error message, for debugging
+        type: string
+      status:
+        description: user-level status message
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:3000
+info:
+  contact:
+    email: support@swagg.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /properties:
+    get:
+      consumes:
+      - application/json
+      description: get properties
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Property'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrResponse'
+      summary: List properties
+      tags:
+      - properties
+  /properties/{property_id}:
+    get:
+      consumes:
+      - application/json
+      description: get property by ID
+      parameters:
+      - description: property_id
+        in: path
+        name: property_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Property'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.ErrResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ErrResponse'
+      summary: Show a property
+      tags:
+      - property
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

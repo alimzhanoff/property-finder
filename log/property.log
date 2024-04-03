@@ -1,0 +1,2 @@
+{"level":"info","msg":"starting property-finder","time":"2024-03-31T15:18:04+05:00"}
+{"level":"error","msg":"failed to init storage: storage.property.postgres.New: ERROR: column \"property_type_name\" of relation \"property_types\" does not exist (SQLSTATE 42703)","time":"2024-03-31T15:18:04+05:00"}

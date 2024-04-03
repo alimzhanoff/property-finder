@@ -1,0 +1,268 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server celler server.",
+        "title": "Swagger Example API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.swagger.io/support",
+            "email": "support@swagg.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "paths": {
+        "/properties": {
+            "get": {
+                "description": "get properties",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "properties"
+                ],
+                "summary": "List properties",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Property"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/properties/{property_id}": {
+            "get": {
+                "description": "get property by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "property"
+                ],
+                "summary": "Show a property",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "property_id",
+                        "name": "property_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Property"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ErrResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Address": {
+            "type": "object",
+            "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "address_postal_code": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "street": {
+                    "$ref": "#/definitions/models.Street"
+                }
+            }
+        },
+        "models.City": {
+            "type": "object",
+            "properties": {
+                "city_id": {
+                    "type": "integer"
+                },
+                "city_name": {
+                    "type": "string"
+                },
+                "region": {
+                    "$ref": "#/definitions/models.Region"
+                }
+            }
+        },
+        "models.Country": {
+            "type": "object",
+            "properties": {
+                "country_id": {
+                    "type": "integer"
+                },
+                "country_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.MetroStation": {
+            "type": "object",
+            "properties": {
+                "metro_station_id": {
+                    "type": "integer"
+                },
+                "metro_station_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Property": {
+            "type": "object",
+            "properties": {
+                "metro_station": {
+                    "$ref": "#/definitions/models.MetroStation"
+                },
+                "property_address": {
+                    "$ref": "#/definitions/models.Address"
+                },
+                "property_address_text": {
+                    "type": "string"
+                },
+                "property_area": {
+                    "type": "number"
+                },
+                "property_construction_year": {
+                    "type": "integer"
+                },
+                "property_description": {
+                    "type": "string"
+                },
+                "property_distance_to_metro": {
+                    "type": "number"
+                },
+                "property_has_pool": {
+                    "type": "boolean"
+                },
+                "property_id": {
+                    "type": "integer"
+                },
+                "property_price": {
+                    "type": "number"
+                },
+                "property_rooms": {
+                    "type": "integer"
+                },
+                "property_type": {
+                    "$ref": "#/definitions/models.PropertyType"
+                }
+            }
+        },
+        "models.PropertyType": {
+            "type": "object",
+            "properties": {
+                "property_type_id": {
+                    "type": "integer"
+                },
+                "property_type_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Region": {
+            "type": "object",
+            "properties": {
+                "region_country": {
+                    "$ref": "#/definitions/models.Country"
+                },
+                "region_id": {
+                    "type": "integer"
+                },
+                "region_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Street": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "$ref": "#/definitions/models.City"
+                },
+                "street_id": {
+                    "type": "integer"
+                },
+                "street_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.ErrResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "application-specific error code",
+                    "type": "integer"
+                },
+                "error": {
+                    "description": "application-level error message, for debugging",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "user-level status message",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    },
+    "externalDocs": {
+        "description": "OpenAPI",
+        "url": "https://swagger.io/resources/open-api/"
+    }
+}
